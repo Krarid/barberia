@@ -1,9 +1,12 @@
+from typing import Annotated
+
 from pydantic import BaseModel, Field
-from fastapi import APIRouter, Path
+from sqlalchemy.orm import Session
+from fastapi import APIRouter, Depends, Path, HTTPException
 from starlette import status
 
-# from ..database import SessionLocal
-# from ..models import Todos
+from ..database import SessionLocal
+from ..models import Services
 # from .auth import get_current_user
 
 router = APIRouter(
@@ -11,15 +14,15 @@ router = APIRouter(
     tags=['services']
 )
 
-""" def get_db():
+def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
-"""
 
-#db_dependency = Annotated[Session, Depends(get_db)]
+
+db_dependency = Annotated[Session, Depends(get_db)]
 #user_dependency = Annotated[dict, Depends(get_current_user)]
 
 class ServiceRequest(BaseModel):
@@ -27,13 +30,17 @@ class ServiceRequest(BaseModel):
     price: float = Field(gt=0)
 
 @router.get("/", status_code=status.HTTP_200_OK)
-async def read_all():
-    return [{"name": "Service 1", "price": 100.0}, {"name": "Service 2", "price": 200.0}]
+async def read_all(db: db_dependency):
+    return db.query(Services).all()
 
 @router.get("/{service_id}", status_code=status.HTTP_200_OK)
-async def get_service(service_id: int = Path(gt=0)):
-    return {"name": "Service 1", "price": 100.0}
+async def get_service(db: db_dependency, service_id: int = Path(gt=0)):
+    service_model = db.query(Services).filter(Services.id == service_id).first()
 
+    if service_model is not None:
+        return service_model
+
+    raise HTTPException(status_code=404, detail='Service not found.')
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_service(service_request: ServiceRequest):
