@@ -1,0 +1,74 @@
+from typing import Annotated
+
+from pydantic import BaseModel, Field
+from sqlalchemy.orm import Session
+from fastapi import APIRouter, Depends, Path, HTTPException
+from starlette import status
+
+from ..database import SessionLocal
+from ..models import Customers
+# from .auth import get_current_user
+
+router = APIRouter(
+    prefix='/customers',
+    tags=['customers']
+)
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+db_dependency = Annotated[Session, Depends(get_db)]
+#user_dependency = Annotated[dict, Depends(get_current_user)]
+
+class CustomerRequest(BaseModel):
+    first_name: str = Field(min_length=3)
+    last_name: str = Field(min_length=3)
+    birthday: str = Field(min_length=5)
+    phone_number: str = Field(min_length=10)
+    address: str = Field(min_length=3)
+
+@router.get("/", status_code=status.HTTP_200_OK)
+async def read_all(db: db_dependency):
+    return db.query(Customers).all()
+
+@router.get("/{customer_id}", status_code=status.HTTP_200_OK)
+async def get_customer(db: db_dependency, customer_id: int = Path(gt=0)):
+    customer_model = db.query(Customers).filter(Customers.id == customer_id).first()
+
+    if customer_model is not None:
+        return customer_model
+
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Service not found.')
+
+@router.post("/", status_code=status.HTTP_201_CREATED)
+async def create_customer(db: db_dependency, service_request: CustomerRequest):
+    customer_model = Customers(**service_request.model_dump())
+    db.add(customer_model)
+    db.commit()
+
+@router.put("/{customer_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def update_customer(db: db_dependency, service_request: CustomerRequest, customer_id: int = Path(gt=0)):
+    customer_model = db.query(Customers).filter(Customers.id == customer_id).first()
+
+    if customer_model is not None:
+        for key, value in service_request.model_dump().items():
+            setattr(customer_model, key, value)
+        db.commit()
+        return
+
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Service not found.')
+
+@router.delete("/{customer_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_customer(db: db_dependency, customer_id: int = Path(gt=0)):
+    customer_model = db.query(Customers).filter(Customers.id == customer_id).first()
+
+    if customer_model is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Service not found.')
+
+    db.delete(customer_model)
+    db.commit()
