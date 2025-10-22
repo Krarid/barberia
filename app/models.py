@@ -1,5 +1,6 @@
 from .database import Base
-from sqlalchemy import Column, Integer, Float, String, Date, DateTime, Time
+from sqlalchemy import Column, Integer, Float, String, Date, DateTime, Time, ForeignKey
+from datetime import datetime
 
 
 class Services(Base):
@@ -28,11 +29,14 @@ class Appointments(Base):
     __tablename__ = "appointments"
     id = Column(Integer, primary_key=True, index=True)
     price = Column(Float)
-    date_time = Column(DateTime)
+    date_time = Column(DateTime, default=datetime.now())
     payment_method = Column(String)
     state = Column(String)
     tips = Column(Float)
-    duration = Column(Time)
+    duration = Column(Float)
+    barber_id = Column(Integer, ForeignKey('barbers.id'))
+    customer_id = Column(Integer, ForeignKey('customers.id'))
+    service_id = Column(Integer, ForeignKey('services.id'))
 
 class Stock(Base):
     __tablename__ = "stock"

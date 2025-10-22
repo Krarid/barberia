@@ -27,11 +27,13 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 class AppointmentRequest(BaseModel):
     price: float = Field(gt=0)
-    date_time: str = Field(gt=0)
-    payment_method: str = Field(gt=5)
-    state: str = Field(gt=3)
-    tips: int = Field(ge=0)
-    duration: str = Field(ge=0)
+    payment_method: str = Field(min_length=5)
+    state: str = Field(min_length=4)
+    tips: float = Field(ge=0)
+    duration: float = Field(gt=0)
+    barber_id: int = Field(gt=0)
+    customer_id: int = Field(gt=0)
+    service_id: int = Field(gt=0)
 
 @router.get("/", status_code=status.HTTP_200_OK)
 async def get_all_appointments(db: db_dependency):
