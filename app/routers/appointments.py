@@ -40,7 +40,7 @@ async def get_all_appointments(db: db_dependency):
     return db.query(Appointments).all()
 
 @router.get("/{appointment_id}", status_code=status.HTTP_200_OK)
-async def get_service(db: db_dependency, appointment_request: int = Path(gt=0)):
+async def get_appointment(db: db_dependency, appointment_request: int = Path(gt=0)):
     appointment_model = db.query(Appointments).filter(Appointments.id == appointment_request).first()
 
     if appointment_model is not None:
@@ -49,7 +49,7 @@ async def get_service(db: db_dependency, appointment_request: int = Path(gt=0)):
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Appointment not found.')
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-async def create_service(db: db_dependency, appointment_request: AppointmentRequest):
+async def create_appointment(db: db_dependency, appointment_request: AppointmentRequest):
     appointment_model = Appointments(**appointment_request.model_dump())
     db.add(appointment_model)
     db.commit()
@@ -59,7 +59,7 @@ async def create_service(db: db_dependency, appointment_request: AppointmentRequ
     return appointment_model
 
 @router.put("/{appointment_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def update_service(db: db_dependency, appointment_request: AppointmentRequest, appointment_id: int = Path(gt=0)):
+async def update_appointment(db: db_dependency, appointment_request: AppointmentRequest, appointment_id: int = Path(gt=0)):
     appointment_model = db.query(Appointments).filter(Appointments.id == appointment_id).first()
 
     if appointment_model is not None:
@@ -71,7 +71,7 @@ async def update_service(db: db_dependency, appointment_request: AppointmentRequ
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Appointment not found.')
 
 @router.delete("/{appointment_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_service(db: db_dependency, appointment_request: int = Path(gt=0)):
+async def delete_appointment(db: db_dependency, appointment_request: int = Path(gt=0)):
     appointment_model = db.query(Appointments).filter(Appointments.id == appointment_request).first()
 
     if appointment_model is None:

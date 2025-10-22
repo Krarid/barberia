@@ -35,7 +35,7 @@ async def get_all_barbers(db: db_dependency):
     return db.query(Barbers).all()
 
 @router.get("/{barber_id}", status_code=status.HTTP_200_OK)
-async def get_service(db: db_dependency, barber_id: int = Path(gt=0)):
+async def get_barber(db: db_dependency, barber_id: int = Path(gt=0)):
     barber_model = db.query(Barbers).filter(Barbers.id == barber_id).first()
 
     if barber_model is not None:
@@ -44,7 +44,7 @@ async def get_service(db: db_dependency, barber_id: int = Path(gt=0)):
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Barber not found.')
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-async def create_service(db: db_dependency, service_request: BarberRequest):
+async def create_barber(db: db_dependency, service_request: BarberRequest):
     barber_model = Barbers(**service_request.model_dump())
     db.add(barber_model)
     db.commit()
@@ -54,7 +54,7 @@ async def create_service(db: db_dependency, service_request: BarberRequest):
     return barber_model
 
 @router.put("/{barber_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def update_service(db: db_dependency, service_request: BarberRequest, barber_id: int = Path(gt=0)):
+async def update_barber(db: db_dependency, service_request: BarberRequest, barber_id: int = Path(gt=0)):
     barber_model = db.query(Barbers).filter(Barbers.id == barber_id).first()
 
     if barber_model is not None:
@@ -66,7 +66,7 @@ async def update_service(db: db_dependency, service_request: BarberRequest, barb
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Barber not found.')
 
 @router.delete("/{barber_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_service(db: db_dependency, barber_id: int = Path(gt=0)):
+async def delete_barber(db: db_dependency, barber_id: int = Path(gt=0)):
     barber_model = db.query(Barbers).filter(Barbers.id == barber_id).first()
 
     if barber_model is None:
