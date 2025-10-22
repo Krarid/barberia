@@ -45,9 +45,13 @@ async def get_product(db: db_dependency, stock_id: int = Path(gt=0)):
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_product(db: db_dependency, stock_request: StockRequest):
-    service_model = Stock(**stock_request.model_dump())
-    db.add(service_model)
+    stock_model = Stock(**stock_request.model_dump())
+    db.add(stock_model)
     db.commit()
+
+    # return the created stock
+    db.refresh(stock_model)
+    return stock_model
 
 @router.put("/{stock_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def update_product(db: db_dependency, stock_request: StockRequest, stock_id: int = Path(gt=0)):

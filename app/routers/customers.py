@@ -51,6 +51,10 @@ async def create_customer(db: db_dependency, service_request: CustomerRequest):
     db.add(customer_model)
     db.commit()
 
+    # return the created customer
+    db.refresh(customer_model)
+    return customer_model
+
 @router.put("/{customer_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def update_customer(db: db_dependency, service_request: CustomerRequest, customer_id: int = Path(gt=0)):
     customer_model = db.query(Customers).filter(Customers.id == customer_id).first()

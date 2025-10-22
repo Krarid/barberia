@@ -48,6 +48,10 @@ async def create_service(db: db_dependency, service_request: ServiceRequest):
     db.add(service_model)
     db.commit()
 
+    # return the created service
+    db.refresh(service_model)
+    return service_model
+
 @router.put("/{service_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def update_service(db: db_dependency, service_request: ServiceRequest, service_id: int = Path(gt=0)):
     service_model = db.query(Services).filter(Services.id == service_id).first()

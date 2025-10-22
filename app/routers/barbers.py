@@ -49,6 +49,10 @@ async def create_service(db: db_dependency, service_request: BarberRequest):
     db.add(barber_model)
     db.commit()
 
+    # return the created barber
+    db.refresh(barber_model)
+    return barber_model
+
 @router.put("/{barber_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def update_service(db: db_dependency, service_request: BarberRequest, barber_id: int = Path(gt=0)):
     barber_model = db.query(Barbers).filter(Barbers.id == barber_id).first()
