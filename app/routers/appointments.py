@@ -1,3 +1,4 @@
+import datetime
 from typing import Annotated
 
 from pydantic import BaseModel, Field
@@ -30,7 +31,9 @@ class AppointmentRequest(BaseModel):
     payment_method: str = Field(min_length=5)
     state: str = Field(min_length=4)
     tips: float = Field(ge=0)
-    duration: float = Field(gt=0)
+    date: datetime.date = Field(description='A date')
+    start_time: datetime.time = Field(description='Start time')
+    end_time: datetime.time = Field(description='End time')
     barber_id: int = Field(gt=0)
     customer_id: int = Field(gt=0)
     service_id: int = Field(gt=0)

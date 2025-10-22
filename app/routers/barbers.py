@@ -1,3 +1,4 @@
+import datetime
 from typing import Annotated
 
 from pydantic import BaseModel, Field
@@ -28,7 +29,7 @@ db_dependency = Annotated[Session, Depends(get_db)]
 class BarberRequest(BaseModel):
     first_name: str = Field(min_length=3)
     last_name: str = Field(min_length=3)
-    birthday: str = Field(min_length=5)
+    birthday: datetime.date = Field(description='A date')
 
 @router.get("/", status_code=status.HTTP_200_OK)
 async def get_all_barbers(db: db_dependency):
