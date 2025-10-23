@@ -8,7 +8,7 @@ from starlette import status
 
 from ..database import SessionLocal
 from ..models import Barbers
-# from .auth import get_current_user
+from .auth import get_current_user
 
 router = APIRouter(
     prefix='/barbers',
@@ -24,7 +24,7 @@ def get_db():
 
 
 db_dependency = Annotated[Session, Depends(get_db)]
-#user_dependency = Annotated[dict, Depends(get_current_user)]
+user_dependency = Annotated[dict, Depends(get_current_user)]
 
 class BarberRequest(BaseModel):
     first_name: str = Field(min_length=3)
@@ -32,11 +32,17 @@ class BarberRequest(BaseModel):
     birthday: datetime.date = Field(description='A date')
 
 @router.get("/", status_code=status.HTTP_200_OK)
-async def get_all_barbers(db: db_dependency):
+async def get_all_barbers(user: user_dependency, db: db_dependency):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     return db.query(Barbers).all()
 
 @router.get("/{barber_id}", status_code=status.HTTP_200_OK)
-async def get_barber(db: db_dependency, barber_id: int = Path(gt=0)):
+async def get_barber(user: user_dependency, db: db_dependency, barber_id: int = Path(gt=0)):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     barber_model = db.query(Barbers).filter(Barbers.id == barber_id).first()
 
     if barber_model is not None:
@@ -45,7 +51,10 @@ async def get_barber(db: db_dependency, barber_id: int = Path(gt=0)):
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Barber not found.')
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-async def create_barber(db: db_dependency, service_request: BarberRequest):
+async def create_barber(user: user_dependency, db: db_dependency, service_request: BarberRequest):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     barber_model = Barbers(**service_request.model_dump())
     db.add(barber_model)
     db.commit()
@@ -55,7 +64,10 @@ async def create_barber(db: db_dependency, service_request: BarberRequest):
     return barber_model
 
 @router.put("/{barber_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def update_barber(db: db_dependency, service_request: BarberRequest, barber_id: int = Path(gt=0)):
+async def update_barber(user: user_dependency, db: db_dependency, service_request: BarberRequest, barber_id: int = Path(gt=0)):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     barber_model = db.query(Barbers).filter(Barbers.id == barber_id).first()
 
     if barber_model is not None:
@@ -67,7 +79,10 @@ async def update_barber(db: db_dependency, service_request: BarberRequest, barbe
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Barber not found.')
 
 @router.delete("/{barber_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_barber(db: db_dependency, barber_id: int = Path(gt=0)):
+async def delete_barber(user: user_dependency, db: db_dependency, barber_id: int = Path(gt=0)):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     barber_model = db.query(Barbers).filter(Barbers.id == barber_id).first()
 
     if barber_model is None:
