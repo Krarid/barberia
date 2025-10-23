@@ -54,7 +54,7 @@ body {
   background-color: #fff;
 }
 
-.sign-up {
+.card-container {
   display: flex;
   flex-direction: row;
   margin: 5rem 0;
