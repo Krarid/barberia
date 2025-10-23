@@ -8,7 +8,7 @@ from starlette import status
 
 from ..database import SessionLocal
 from ..models import Appointments
-# from .auth import get_current_user
+from .auth import get_current_user
 
 router = APIRouter(
     prefix='/appointments',
@@ -24,7 +24,7 @@ def get_db():
 
 
 db_dependency = Annotated[Session, Depends(get_db)]
-#user_dependency = Annotated[dict, Depends(get_current_user)]
+user_dependency = Annotated[dict, Depends(get_current_user)]
 
 class AppointmentRequest(BaseModel):
     price: float = Field(gt=0)
@@ -39,11 +39,17 @@ class AppointmentRequest(BaseModel):
     service_id: int = Field(gt=0)
 
 @router.get("/", status_code=status.HTTP_200_OK)
-async def get_all_appointments(db: db_dependency):
+async def get_all_appointments(user: user_dependency, db: db_dependency):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     return db.query(Appointments).all()
 
 @router.get("/{appointment_id}", status_code=status.HTTP_200_OK)
-async def get_appointment(db: db_dependency, appointment_request: int = Path(gt=0)):
+async def get_appointment(user: user_dependency, db: db_dependency, appointment_request: int = Path(gt=0)):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     appointment_model = db.query(Appointments).filter(Appointments.id == appointment_request).first()
 
     if appointment_model is not None:
@@ -52,7 +58,10 @@ async def get_appointment(db: db_dependency, appointment_request: int = Path(gt=
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Appointment not found.')
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-async def create_appointment(db: db_dependency, appointment_request: AppointmentRequest):
+async def create_appointment(user: user_dependency, db: db_dependency, appointment_request: AppointmentRequest):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     appointment_model = Appointments(**appointment_request.model_dump())
     db.add(appointment_model)
     db.commit()
@@ -62,7 +71,10 @@ async def create_appointment(db: db_dependency, appointment_request: Appointment
     return appointment_model
 
 @router.put("/{appointment_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def update_appointment(db: db_dependency, appointment_request: AppointmentRequest, appointment_id: int = Path(gt=0)):
+async def update_appointment(user: user_dependency, db: db_dependency, appointment_request: AppointmentRequest, appointment_id: int = Path(gt=0)):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     appointment_model = db.query(Appointments).filter(Appointments.id == appointment_id).first()
 
     if appointment_model is not None:
@@ -74,7 +86,10 @@ async def update_appointment(db: db_dependency, appointment_request: Appointment
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Appointment not found.')
 
 @router.delete("/{appointment_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_appointment(db: db_dependency, appointment_request: int = Path(gt=0)):
+async def delete_appointment(user: user_dependency, db: db_dependency, appointment_request: int = Path(gt=0)):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     appointment_model = db.query(Appointments).filter(Appointments.id == appointment_request).first()
 
     if appointment_model is None:
