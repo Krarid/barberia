@@ -7,7 +7,7 @@ from starlette import status
 
 from ..database import SessionLocal
 from ..models import Stock
-# from .auth import get_current_user
+from .auth import get_current_user
 
 router = APIRouter(
     prefix='/stock',
@@ -23,7 +23,7 @@ def get_db():
 
 
 db_dependency = Annotated[Session, Depends(get_db)]
-#user_dependency = Annotated[dict, Depends(get_current_user)]
+user_dependency = Annotated[dict, Depends(get_current_user)]
 
 class StockRequest(BaseModel):
     name: str = Field(min_length=3)
@@ -31,11 +31,17 @@ class StockRequest(BaseModel):
     quantity: int = Field(ge=0)
 
 @router.get("/", status_code=status.HTTP_200_OK)
-async def get_all_stock(db: db_dependency):
+async def get_all_stock(user: user_dependency, db: db_dependency):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     return db.query(Stock).all()
 
 @router.get("/{stock_id}", status_code=status.HTTP_200_OK)
-async def get_product(db: db_dependency, stock_id: int = Path(gt=0)):
+async def get_product(user: user_dependency, db: db_dependency, stock_id: int = Path(gt=0)):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     stock_model = db.query(Stock).filter(Stock.id == stock_id).first()
 
     if stock_model is not None:
@@ -44,7 +50,10 @@ async def get_product(db: db_dependency, stock_id: int = Path(gt=0)):
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Product not found.')
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-async def create_product(db: db_dependency, stock_request: StockRequest):
+async def create_product(user: user_dependency, db: db_dependency, stock_request: StockRequest):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     stock_model = Stock(**stock_request.model_dump())
     db.add(stock_model)
     db.commit()
@@ -54,7 +63,10 @@ async def create_product(db: db_dependency, stock_request: StockRequest):
     return stock_model
 
 @router.put("/{stock_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def update_product(db: db_dependency, stock_request: StockRequest, stock_id: int = Path(gt=0)):
+async def update_product(user: user_dependency, db: db_dependency, stock_request: StockRequest, stock_id: int = Path(gt=0)):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     stock_model = db.query(Stock).filter(Stock.id == stock_id).first()
 
     if stock_model is not None:
@@ -66,7 +78,10 @@ async def update_product(db: db_dependency, stock_request: StockRequest, stock_i
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Product not found.')
 
 @router.delete("/{stock_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_product(db: db_dependency, stock_id: int = Path(gt=0)):
+async def delete_product(user: user_dependency, db: db_dependency, stock_id: int = Path(gt=0)):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     stock_model = db.query(Stock).filter(Stock.id == stock_id).first()
 
     if stock_model is None:
