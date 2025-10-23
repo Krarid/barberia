@@ -7,7 +7,7 @@ from starlette import status
 
 from ..database import SessionLocal
 from ..models import Services
-# from .auth import get_current_user
+from .auth import get_current_user
 
 router = APIRouter(
     prefix='/services',
@@ -23,18 +23,24 @@ def get_db():
 
 
 db_dependency = Annotated[Session, Depends(get_db)]
-#user_dependency = Annotated[dict, Depends(get_current_user)]
+user_dependency = Annotated[dict, Depends(get_current_user)]
 
 class ServiceRequest(BaseModel):
     name: str = Field(min_length=3)
     price: float = Field(gt=0)
 
 @router.get("/", status_code=status.HTTP_200_OK)
-async def read_all(db: db_dependency):
+async def read_all(user: user_dependency, db: db_dependency):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     return db.query(Services).all()
 
 @router.get("/{service_id}", status_code=status.HTTP_200_OK)
-async def get_service(db: db_dependency, service_id: int = Path(gt=0)):
+async def get_service(user: user_dependency, db: db_dependency, service_id: int = Path(gt=0)):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     service_model = db.query(Services).filter(Services.id == service_id).first()
 
     if service_model is not None:
@@ -43,7 +49,10 @@ async def get_service(db: db_dependency, service_id: int = Path(gt=0)):
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Service not found.')
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-async def create_service(db: db_dependency, service_request: ServiceRequest):
+async def create_service(user: user_dependency, db: db_dependency, service_request: ServiceRequest):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     service_model = Services(**service_request.model_dump())
     db.add(service_model)
     db.commit()
@@ -53,7 +62,10 @@ async def create_service(db: db_dependency, service_request: ServiceRequest):
     return service_model
 
 @router.put("/{service_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def update_service(db: db_dependency, service_request: ServiceRequest, service_id: int = Path(gt=0)):
+async def update_service(user: user_dependency, db: db_dependency, service_request: ServiceRequest, service_id: int = Path(gt=0)):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     service_model = db.query(Services).filter(Services.id == service_id).first()
 
     if service_model is not None:
@@ -65,7 +77,10 @@ async def update_service(db: db_dependency, service_request: ServiceRequest, ser
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Service not found.')
 
 @router.delete("/{service_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_service(db: db_dependency, service_id: int = Path(gt=0)):
+async def delete_service(user: user_dependency, db: db_dependency, service_id: int = Path(gt=0)):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     service_model = db.query(Services).filter(Services.id == service_id).first()
 
     if service_model is None:
