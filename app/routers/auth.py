@@ -9,7 +9,7 @@ from typing import Annotated
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from datetime import timedelta, datetime, timezone
 from jose import jwt, JWTError
-# from fastapi.templating import Jinja2Templates
+from fastapi.templating import Jinja2Templates
 
 from ..database import SessionLocal
 
@@ -46,6 +46,13 @@ def get_db():
         db.close()
 
 db_dependency = Annotated[Session, Depends(get_db)]
+
+### Pages ###
+templates = Jinja2Templates(directory="app/templates")
+
+@router.get("/register")
+def render_register_page(request: Request):
+    return templates.TemplateResponse("register.html", {"request": request})
 
 ### Endpoints ###
 
