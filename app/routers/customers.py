@@ -8,7 +8,7 @@ from starlette import status
 
 from ..database import SessionLocal
 from ..models import Customers
-# from .auth import get_current_user
+from .auth import get_current_user
 
 router = APIRouter(
     prefix='/customers',
@@ -24,7 +24,7 @@ def get_db():
 
 
 db_dependency = Annotated[Session, Depends(get_db)]
-#user_dependency = Annotated[dict, Depends(get_current_user)]
+user_dependency = Annotated[dict, Depends(get_current_user)]
 
 class CustomerRequest(BaseModel):
     first_name: str = Field(min_length=3)
@@ -34,11 +34,17 @@ class CustomerRequest(BaseModel):
     address: str = Field(min_length=3)
 
 @router.get("/", status_code=status.HTTP_200_OK)
-async def read_all(db: db_dependency):
+async def read_all(user: user_dependency, db: db_dependency):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     return db.query(Customers).all()
 
 @router.get("/{customer_id}", status_code=status.HTTP_200_OK)
-async def get_customer(db: db_dependency, customer_id: int = Path(gt=0)):
+async def get_customer(user: user_dependency, db: db_dependency, customer_id: int = Path(gt=0)):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     customer_model = db.query(Customers).filter(Customers.id == customer_id).first()
 
     if customer_model is not None:
@@ -47,7 +53,10 @@ async def get_customer(db: db_dependency, customer_id: int = Path(gt=0)):
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Customer not found.')
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-async def create_customer(db: db_dependency, service_request: CustomerRequest):
+async def create_customer(user: user_dependency, db: db_dependency, service_request: CustomerRequest):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     customer_model = Customers(**service_request.model_dump())
     db.add(customer_model)
     db.commit()
@@ -57,7 +66,10 @@ async def create_customer(db: db_dependency, service_request: CustomerRequest):
     return customer_model
 
 @router.put("/{customer_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def update_customer(db: db_dependency, service_request: CustomerRequest, customer_id: int = Path(gt=0)):
+async def update_customer(user: user_dependency, db: db_dependency, service_request: CustomerRequest, customer_id: int = Path(gt=0)):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     customer_model = db.query(Customers).filter(Customers.id == customer_id).first()
 
     if customer_model is not None:
@@ -69,7 +81,10 @@ async def update_customer(db: db_dependency, service_request: CustomerRequest, c
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Customer not found.')
 
 @router.delete("/{customer_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_customer(db: db_dependency, customer_id: int = Path(gt=0)):
+async def delete_customer(user: user_dependency, db: db_dependency, customer_id: int = Path(gt=0)):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
     customer_model = db.query(Customers).filter(Customers.id == customer_id).first()
 
     if customer_model is None:
