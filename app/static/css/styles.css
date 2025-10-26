@@ -168,6 +168,11 @@ button {
   margin: 1rem 0rem;
 }
 
+.menu-item:hover {
+  background-color: #4b4b4b;
+  border-radius: 0.5rem;
+}
+
 header {
   position: absolute;
   top: 0;

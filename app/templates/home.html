@@ -1,39 +1,7 @@
 {% include 'layout.html' %}
 
 <section class="container">
-    <div class="menu">
-        <div class="menu-item">
-            <div><img src="../static/images/dorado-negro-no-bg.png" alt="home" width="64"/></div>
-        </div>
-        <div class="menu-item">
-            <a href="/"><img src="../static/images/home.png" alt="home" width="32"/></a>
-            <div>Home</div>
-        </div>
-        <div class="menu-item">
-            <a href="/stock/stock"><img src="../static/images/product.png" alt="stock" width="32"/></a>
-            <div>Inventario</div>
-        </div>
-        <div class="menu-item">
-            <a href="/customers/customers"><img src="../static/images/customer.png" alt="clients" width="32"/></a>
-            <div>Clientes</div>
-        </div>
-        <div class="menu-item">
-            <a href="/barbers/barbers"><img src="../static/images/hairstyle.png" alt="employees" width="32"/></a>
-            <div>Barberos</div>
-        </div>
-        <div class="menu-item">
-            <a href="/services/services"><img src="../static/images/scissors.png" alt="services" width="32"/></a>
-            <div>Servicios</div>
-        </div>
-        <div class="menu-item">
-            <a href="/appointments/appointments"><img src="../static/images/calendar.png" alt="appointments" width="32"/></a>
-            <div>Citas</div>
-        </div>
-        <div class="menu-item">
-            <a><img src="../static/images/sign-out.png" alt="sign out" width="32"/></a>
-            <div>Cerrar sesion</div>
-        </div>
-    </div>
+    {% include 'menu.html' %}
 
     <header>
         <div class="account"><img src="../static/images/user.png" alt="user" width="32"/>Bienvenido, Javier</div>
