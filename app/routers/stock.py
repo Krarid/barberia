@@ -2,7 +2,8 @@ from typing import Annotated
 
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends, Path, HTTPException
+from fastapi import APIRouter, Depends, Path, HTTPException, Request
+from fastapi.templating import Jinja2Templates
 from starlette import status
 
 from ..database import SessionLocal
@@ -24,6 +25,15 @@ def get_db():
 
 db_dependency = Annotated[Session, Depends(get_db)]
 user_dependency = Annotated[dict, Depends(get_current_user)]
+
+### Pages ###
+templates = Jinja2Templates(directory="app/templates")
+
+@router.get("/stock")
+def render_register_page(request: Request):
+    return templates.TemplateResponse("stock.html", {"request": request})
+
+### Endpoints ###
 
 class StockRequest(BaseModel):
     name: str = Field(min_length=3)

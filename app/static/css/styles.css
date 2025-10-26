@@ -242,6 +242,90 @@ header {
   max-width:700px;
 }
 
+.header-title {
+  margin-top: 6rem;
+  border-bottom: 2px solid var(--black-barber);
+  color: var(--black-barber);
+}
+
+table {
+  table-layout: fixed;
+  width: 100%;
+  margin: 10px auto;
+  border-collapse: collapse;
+  border-top: 1px solid #999999;
+  border-bottom: 1px solid #999999;
+}
+
+th,
+td {
+  padding: 0.6em;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #eeeeee;
+}
+
+.icon > img {
+  padding: 0.35rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.add {
+  background-color: rgba(28, 142, 30, 0.8);
+}
+
+.add:hover {
+  background-color: rgba(28, 142, 30, 1);
+}
+
+.edit {
+  background-color: rgba(28, 79, 142, 0.8);
+}
+
+.edit:hover {
+  background-color: var(--blue-barber);
+}
+
+.delete {
+  background-color: rgba(213, 43, 48, 0.8);
+}
+
+.delete:hover {
+  background-color: var(--red-barber);
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0px;
+  margin-top: 2rem;
+}
+
+.pagination li a {
+  display: block;
+  padding: 8px 12px;
+  text-decoration: none;
+  border: 1px solid gray;
+  color: black;
+  margin: 0 4px;
+  border-radius: 5px;
+}
+
+.pagination li a.active {
+  background-color: var(--black-barber);
+  color: white;
+}
+
+.pagination li a.disabled {
+  color: #dddddd;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 /* TEXT ANIMATION */
 .shadow-dance-text {
     font-size: 3rem;
