@@ -1,6 +1,7 @@
 :root {
     --red-barber: #d52b30;
     --blue-barber: #1c4f8e;
+    --black-barber: #262626;
 }
 
 .container {
@@ -132,13 +133,113 @@ label {
 }
 
 button {
-    background-color: rgba(0, 0, 0, 0.85);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.25rem;
-    font-size: medium;
-    cursor: pointer;
-    border: none;
+  background-color: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.25rem;
+  font-size: medium;
+  cursor: pointer;
+  border: none;
+}
+
+.menu {
+  padding: 0rem 0.5rem 3rem 0.5rem;
+  font-size: 0.75rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  text-align: center;
+  background-color: var(--black-barber);
+  color: white;
+  border: 1px solid rgba(0, 0, 0, 1);
+}
+
+.menu-item {
+  width: 4rem;
+  height: 4rem;
+  align-content: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0rem;
+}
+
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 1rem 5rem 1rem 5rem;
+  align-items: center;
+  text-align: center;
+  color: var(--black-barber);
+}
+
+.account {
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 1rem;
+}
+
+.account > img {
+  padding-right: 1rem;
+}
+
+.statistic-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.statistic {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 1rem;
+  width: 15rem;
+  height: 10rem;
+  margin: 3rem 1.5rem;
+  text-align: center;
+  justify-content: space-evenly;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+.statistic-body {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.statistic-footer {
+  font-size: 1.2rem;
+}
+
+.chars {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: black;
+}
+
+#myPlot {
+  width:100%;
+  max-width:700px;
+}
+
+#myPlot2 {
+  width:100%;
+  max-width:700px;
 }
 
 /* TEXT ANIMATION */

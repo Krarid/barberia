@@ -1,5 +1,81 @@
 {% include 'layout.html' %}
 
 <section class="container">
+    <div class="menu">
+        <div class="menu-item">
+            <div><img src="../static/images/dorado-negro-no-bg.png" alt="home" width="64"/></div>
+        </div>
+        <div class="menu-item">
+            <div><img src="../static/images/home.png" alt="home" width="32"/></div>
+            <div>Home</div>
+        </div>
+        <div class="menu-item">
+            <div><img src="../static/images/product.png" alt="stock" width="32"/></div>
+            <div>Inventario</div>
+        </div>
+        <div class="menu-item">
+            <div><img src="../static/images/customer.png" alt="clients" width="32"/></div>
+            <div>Clientes</div>
+        </div>
+        <div class="menu-item">
+            <div><img src="../static/images/hairstyle.png" alt="employees" width="32"/></div>
+            <div>Barberos</div>
+        </div>
+        <div class="menu-item">
+            <div><img src="../static/images/scissors.png" alt="services" width="32"/></div>
+            <div>Servicios</div>
+        </div>
+        <div class="menu-item">
+            <div><img src="../static/images/calendar.png" alt="appointments" width="32"/></div>
+            <div>Citas</div>
+        </div>
+        <div class="menu-item">
+            <div><img src="../static/images/sign-out.png" alt="sign out" width="32"/></div>
+            <div>Cerrar sesion</div>
+        </div>
+    </div>
 
+    <header>
+        <div class="account"><img src="../static/images/user.png" alt="user" width="32"/>Bienvenido, Javier</div>
+    </header>
+
+    <div class="statistic-row">
+        <div class="statistic">
+            <div class="statistic-body">$5,000.00</div>
+            <div class="statistic-footer">Ingresos del mes</div>
+        </div>
+        <div class="statistic">
+            <div class="statistic-body">52</div>
+            <div class="statistic-footer">Citas completadas</div>
+        </div>
+        <div class="statistic">
+            <div class="statistic-body">12</div>
+            <div class="statistic-footer">Clientes nuevos</div>
+        </div>
+        <div class="statistic">
+            <div class="statistic-body">3</div>
+            <div class="statistic-footer">Barberos nuevos</div>
+        </div>
+    </div>
+
+    <div class="chars">
+        <div id="myPlot"></div>
+        <div id="myPlot2"></div>
+    </div>
 </section>
+
+<script src="https://cdn.plot.ly/plotly-3.1.2.min.js" charset="utf-8"></script>
+<script src="{{ url_for('static', path='/js/scripts.js') }}"></script>
+
+<!-- <a href="https://www.flaticon.es/iconos-gratis/perfiles-de-usuario" title="perfiles de usuario iconos">Perfiles de usuario iconos creados por Nur syifa fauziah - Flaticon</a> -->
+<!-- <a href="https://www.flaticon.com/free-icons/barber-shop" title="barber shop icons">Barber shop icons created by Freepik - Flaticon</a> -->
+<!-- <a href="https://www.flaticon.com/free-icons/calendar" title="calendar icons">Calendar icons created by Prosymbols Premium - Flaticon</a> -->
+<!-- <a href="https://www.flaticon.com/free-icons/product" title="product icons">Product icons created by Uniconlabs - Flaticon</a> -->
+<!-- <a href="https://www.flaticon.com/free-icons/scissors" title="scissors icons">Scissors icons created by Freepik - Flaticon</a> -->
+<!-- <a href="https://www.flaticon.com/free-icons/home" title="home icons">Home icons created by Dave Gandy - Flaticon</a> -->
+<!-- <a href="https://www.flaticon.com/free-icons/customer" title="customer icons">Customer icons created by Freepik - Flaticon</a> -->
+<!-- <a href="https://www.flaticon.com/free-icons/calendar" title="calendar icons">Calendar icons created by Gajah Mada - Flaticon</a> -->
+<!-- <a href="https://www.flaticon.com/free-icons/client" title="client icons">Client icons created by Freepik - Flaticon</a> -->
+<!-- <a href="https://www.flaticon.com/free-icons/product" title="product icons">Product icons created by Freepik - Flaticon</a> -->
+<!-- <a href="https://www.flaticon.com/free-icons/customer-service" title="customer service icons">Customer service icons created by Icon home - Flaticon</a> -->
+<!-- <a href="https://www.flaticon.com/free-icons/barber" title="barber icons">Barber icons created by Marz Gallery - Flaticon</a> -->
