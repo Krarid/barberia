@@ -3,8 +3,9 @@ from typing import Annotated
 
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends, Path, HTTPException
+from fastapi import APIRouter, Depends, Path, HTTPException, Request
 from starlette import status
+from fastapi.templating import Jinja2Templates
 
 from ..database import SessionLocal
 from ..models import Barbers
@@ -22,10 +23,17 @@ def get_db():
     finally:
         db.close()
 
-
 db_dependency = Annotated[Session, Depends(get_db)]
 user_dependency = Annotated[dict, Depends(get_current_user)]
 
+### Pages ###
+templates = Jinja2Templates(directory="app/templates")
+
+@router.get("/barbers")
+def render_barbers_page(request: Request):
+    return templates.TemplateResponse("barbers.html", {"request": request})
+
+### Endpoints ###
 class BarberRequest(BaseModel):
     first_name: str = Field(min_length=3)
     last_name: str = Field(min_length=3)
