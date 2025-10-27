@@ -3,8 +3,9 @@ from typing import Annotated
 
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends, Path, HTTPException
+from fastapi import APIRouter, Depends, Path, HTTPException, Request
 from starlette import status
+from fastapi.templating import Jinja2Templates
 
 from ..database import SessionLocal
 from ..models import Appointments
@@ -26,6 +27,14 @@ def get_db():
 db_dependency = Annotated[Session, Depends(get_db)]
 user_dependency = Annotated[dict, Depends(get_current_user)]
 
+### Pages ###
+templates = Jinja2Templates(directory="app/templates")
+
+@router.get("/appointments")
+def render_appointment_page(request: Request):
+    return templates.TemplateResponse("appointments.html", {"request": request})
+
+### Endpoints ###
 class AppointmentRequest(BaseModel):
     price: float = Field(gt=0)
     payment_method: str = Field(min_length=5)

@@ -34,7 +34,6 @@ def render_register_page(request: Request):
     return templates.TemplateResponse("stock.html", {"request": request})
 
 ### Endpoints ###
-
 class StockRequest(BaseModel):
     name: str = Field(min_length=3)
     unit: str = Field(min_length=2)

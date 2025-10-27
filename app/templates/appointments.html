@@ -1,0 +1,101 @@
+{% include 'layout.html' %}
+
+<section class="container">
+    {% include 'menu.html' %}
+
+    <header>
+        <div class="account"><img src="../static/images/user.png" alt="user" width="32"/>Bienvenido, Javier</div>
+    </header>
+
+    <h1 class="header-title">Citas</h1>
+
+    <div class="icon">
+        <img class="add" src="../static/images/add.png" alt="Add" width="24"/>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Barbero</th>
+                <th>Servicio</th>
+                <th>Fecha y hora</th>
+                <th>Metodo de pago</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Alejandro Gutierrez Davila</td>
+                <td>Samuel Cortina Garcia</td>
+                <td>Corte de barba</td>
+                <td>26/10/2025 14:30:00</td>
+                <td>Efectivo</td>
+                <td>Completada</td>
+                <td>
+                    <div class="icon">
+                        <img class="edit" src="../static/images/edit.png" alt="Edit" width="24"/>
+                        <img class="delete" src="../static/images/delete.png" alt="Delete" width="24"/>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>George Smith Patton, Jr.</td>
+                <td>Anahi Gutierrez Alfaro</td>
+                <td>Corte de cabello y barba</td>
+                <td>25/10/2025 14:00:00</td>
+                <td>Tarjeta</td>
+                <td>Cancelada</td>
+                <td>
+                    <div class="icon">
+                        <img class="edit" src="../static/images/edit.png" alt="Edit" width="24"/>
+                        <img class="delete" src="../static/images/delete.png" alt="Delete" width="24"/>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Menjeperra Thutmose</td>
+                <td>Octavio Aleman Mendez</td>
+                <td>Corte de cabello</td>
+                <td>25/10/2025 16:30:00</td>
+                <td>Transferencia</td>
+                <td>Confirmada</td>
+                <td>
+                    <div class="icon">
+                        <img class="edit" src="../static/images/edit.png" alt="Edit" width="24"/>
+                        <img class="delete" src="../static/images/delete.png" alt="Delete" width="24"/>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>George Smith Patton, Jr.</td>
+                <td>Octavio Aleman Mendez</td>
+                <td>Corte de cabello y barba</td>
+                <td>25/10/2025 18:00:00</td>
+                <td>Tarjeta</td>
+                <td>Completada</td>
+                <td>
+                    <div class="icon">
+                        <img class="edit" src="../static/images/edit.png" alt="Edit" width="24"/>
+                        <img class="delete" src="../static/images/delete.png" alt="Delete" width="24"/>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul class="pagination">
+      <li><a href="#">&laquo;</a></li>
+      <li><a class="active" href="#">1</a></li>
+      <li><a href="#">2</a></li>
+      <li><a href="#">3</a></li>
+      <li><a href="#">4</a></li>
+      <li><a href="#">5</a></li>
+      <li><a class="disabled" href="#">&raquo;</a></li>
+    </ul>
+</section>
+
+<!-- <a href="https://www.flaticon.es/iconos-gratis/editar" title="editar iconos">Editar iconos creados por Freepik - Flaticon</a> -->
+<!-- <a href="https://www.flaticon.es/iconos-gratis/ui" title="ui iconos">Ui iconos creados por Us and Up - Flaticon</a> -->
+<!-- <a href="https://www.flaticon.es/iconos-gratis/producto" title="producto iconos">Producto iconos creados por Freepik - Flaticon</a> -->
