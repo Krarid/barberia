@@ -163,6 +163,15 @@ button {
   border: 1px solid rgba(0, 0, 0, 1);
 }
 
+.menu-logo {
+  width: 4rem;
+  height: 4rem;
+  align-content: center;
+  margin: 1rem 0rem;
+  color: white;
+  text-decoration: none;
+}
+
 .menu-item {
   width: 4rem;
   height: 4rem;
