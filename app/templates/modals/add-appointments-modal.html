@@ -1,0 +1,72 @@
+<div id="backgroundModal" class="modal-background" style="display:none">
+    <div id="addModal" class="add-modal">
+        <h1 class="modal-title">Agregar cita</h1>
+        <form>
+            <div class="form-row">
+                <div class="form-group">
+                   <label for="customer">Cliente:</label>
+                    <select name="customer" id="customer">
+                      <option value="">--Seleccionar--</option>
+                      <option value="customer1">Alejandro Gutierrez Davila</option>
+                      <option value="customer2">George Smith Patton, Jr.</option>
+                      <option value="customer3">Menjeperra Thutmose</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                   <label for="barber">Barbero:</label>
+                    <select name="barber" id="barber">
+                      <option value="">--Seleccionar--</option>
+                      <option value="barber1">Samuel Cortina Garcia</option>
+                      <option value="barber2">Anahi Gutierrez Alfaro</option>
+                      <option value="barber3">Octavio Aleman Mendez</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                   <label for="service">Servicio:</label>
+                    <select name="service" id="service">
+                      <option value="">--Seleccionar--</option>
+                      <option value="service1">Corte de cabello</option>
+                      <option value="service2">Corte de barba</option>
+                      <option value="service3">Corte de cabello y barba</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                   <label for="datetime">Fecha y hora:</label>
+                    <input type="datetime-local" id="datetime" autocomplete="datetime" class="form-control underline-blue" name="datetime" required/>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                   <label for="payment-method">Metodo de pago:</label>
+                    <select name="payment-method" id="payment-method">
+                      <option value="">--Seleccionar--</option>
+                      <option value="method1">Efectivo</option>
+                      <option value="method2">Tarjeta</option>
+                      <option value="method3">Transferencia</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                   <label for="status">Estado:</label>
+                    <select name="status" id="status">
+                      <option value="">--Seleccionar--</option>
+                      <option value="status1">Completada</option>
+                      <option value="status2">Cancelada</option>
+                      <option value="status3">Confirmada</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-button">
+                <button type="submit">Agregar</button>
+            </div>
+        </form>
+    </div>
+</div>
