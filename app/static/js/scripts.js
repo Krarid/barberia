@@ -12,7 +12,6 @@ if(addIcon) {
 if(backgroundModal) {
     backgroundModal.addEventListener('click', async function (event) {
         if (!addModal.contains(event.target)) {
-            console.log('Clicked outside the target element!');
             backgroundModal.style.display = 'none';
             return;
         }
