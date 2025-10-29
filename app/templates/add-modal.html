@@ -1,0 +1,34 @@
+<div id="backgroundModal" class="modal-background" style="display:none">
+    <div id="addModal" class="add-modal">
+        <h1 class="modal-title">Agregar producto</h1>
+        <form>
+            <div class="form-row">
+                <div class="form-group">
+                   <label for="product">Producto:</label>
+                    <input type="text" id="product" autocomplete="product" class="form-control underline-red" name="product" required/>
+                </div>
+
+                <div class="form-group">
+                   <label for="quantity">Cantidad:</label>
+                    <input type="number" id="quantity" autocomplete="quantity" class="form-control underline-blue" name="quantity" required/>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="unit">Unidad:</label>
+                    <input type="text" id="unit" autocomplete="unit" class="form-control underline-blue" name="unit"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="price">Precio:</label>
+                    <input type="number" step="0.01" id="price" autocomplete="price" class="form-control underline-blue" name="price" required/>
+                </div>
+            </div>
+
+            <div class="form-button">
+                <button type="submit">Agregar</button>
+            </div>
+        </form>
+    </div>
+</div>
