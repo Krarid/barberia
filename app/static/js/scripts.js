@@ -1,20 +1,20 @@
-/********* Bar char *********/
-const xArray = ["Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-const yArray = [49, 44, 24, 32, 23, 64];
+/********* Add modal *********/
+const addIcon = document.getElementById('addIcon');
+const addModal = document.getElementById('addModal');
+const backgroundModal = document.getElementById('backgroundModal');
 
-const data = [{
-  x: xArray,
-  y: yArray,
-  type: "bar",
-  orientation:"v",
-  marker: {color:"rgba(0,0,255)"}
-}];
+if(addIcon) {
+    addIcon.addEventListener('click', async function (event) {
+        backgroundModal.style.display = 'block';
+    });
+}
 
-const layout = {title:"Cortes mensuales"};
-
-Plotly.newPlot("myPlot", data, layout);
-
-/********* Donut char *********/
-const donutData = [{labels:xArray, values:yArray, hole:.4, type:"pie"}];
-
-Plotly.newPlot("myPlot2", donutData, layout);
+if(backgroundModal) {
+    backgroundModal.addEventListener('click', async function (event) {
+        if (!addModal.contains(event.target)) {
+            console.log('Clicked outside the target element!');
+            backgroundModal.style.display = 'none';
+            return;
+        }
+    });
+}
