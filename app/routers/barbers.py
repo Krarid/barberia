@@ -35,7 +35,6 @@ async def render_barbers_page(request: Request, db: db_dependency):
         user = await get_current_user(request.cookies.get("access_token"))
 
         if user is None:
-            print('User is not authorized')
             return redirect_to_login()
 
         barbers = db.query(Barbers).filter(Barbers.user_id == user.get("id")).all()

@@ -17,14 +17,17 @@
     <table>
         <thead>
             <tr>
+                <th style="display:none">Id</th>
                 <th>Nombre</th>
                 <th>Precio</th>
             </tr>
         </thead>
         <tbody>
+            {% for service in services %}
             <tr>
-                <td>Corte de cabello</td>
-                <td>$150.00</td>
+                <td style="display:none">{{ service.id }}</td>
+                <td>{{ service.name }}</td>
+                <td>${{ service.price }}</td>
                 <td>
                     <div class="icon">
                         <img class="edit" src="../static/images/edit.png" alt="Edit" width="24"/>
@@ -32,66 +35,7 @@
                     </div>
                 </td>
             </tr>
-            <tr>
-                <td>Corte de barba</td>
-                <td>$50.00</td>
-                <td>
-                    <div class="icon">
-                        <img class="edit" src="../static/images/edit.png" alt="Edit" width="24"/>
-                        <img class="delete" src="../static/images/delete.png" alt="Delete" width="24"/>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>Corte de cabello y barba</td>
-                <td>$200.00</td>
-                <td>
-                    <div class="icon">
-                        <img class="edit" src="../static/images/edit.png" alt="Edit" width="24"/>
-                        <img class="delete" src="../static/images/delete.png" alt="Delete" width="24"/>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>Corte de cabello y ceja</td>
-                <td>$200.00</td>
-                <td>
-                    <div class="icon">
-                        <img class="edit" src="../static/images/edit.png" alt="Edit" width="24"/>
-                        <img class="delete" src="../static/images/delete.png" alt="Delete" width="24"/>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>Corte de cabello, ceja y barba</td>
-                <td>$250.00</td>
-                <td>
-                    <div class="icon">
-                        <img class="edit" src="../static/images/edit.png" alt="Edit" width="24"/>
-                        <img class="delete" src="../static/images/delete.png" alt="Delete" width="24"/>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>Lavado de cabello</td>
-                <td>$300.00</td>
-                <td>
-                    <div class="icon">
-                        <img class="edit" src="../static/images/edit.png" alt="Edit" width="24"/>
-                        <img class="delete" src="../static/images/delete.png" alt="Delete" width="24"/>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>Peinado de cabello</td>
-                <td>$100.00</td>
-                <td>
-                    <div class="icon">
-                        <img class="edit" src="../static/images/edit.png" alt="Edit" width="24"/>
-                        <img class="delete" src="../static/images/delete.png" alt="Delete" width="24"/>
-                    </div>
-                </td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
 
