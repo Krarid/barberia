@@ -7,6 +7,7 @@ class Services(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True)
     price = Column(Float)
+    user_id = Column(Integer, ForeignKey('users.id'))
 
 class Customers(Base):
     __tablename__ = "customers"
@@ -16,6 +17,7 @@ class Customers(Base):
     birthday = Column(Date, nullable=True)
     phone_number = Column(String)
     address = Column(String)
+    user_id = Column(Integer, ForeignKey('users.id'))
 
 class Barbers(Base):
     __tablename__ = "barbers"
@@ -23,6 +25,7 @@ class Barbers(Base):
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     birthday = Column(Date, nullable=True)
+    user_id = Column(Integer, ForeignKey('users.id'))
 
 class Appointments(Base):
     __tablename__ = "appointments"
@@ -37,6 +40,7 @@ class Appointments(Base):
     barber_id = Column(Integer, ForeignKey('barbers.id'))
     customer_id = Column(Integer, ForeignKey('customers.id'))
     service_id = Column(Integer, ForeignKey('services.id'))
+    user_id = Column(Integer, ForeignKey('users.id'))
 
 class Stock(Base):
     __tablename__ = "stock"
@@ -44,6 +48,7 @@ class Stock(Base):
     name = Column(String, nullable=False)
     unit = Column(String, nullable=False)
     quantity = Column(Integer, nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id'))
 
 class Users(Base):
     __tablename__ = "users"

@@ -30,15 +30,18 @@ user_dependency = Annotated[dict, Depends(get_current_user)]
 templates = Jinja2Templates(directory="app/templates")
 
 @router.get("/stock")
-async def render_register_page(request: Request):
+async def render_register_page(request: Request, db: db_dependency):
     try:
         user = await get_current_user(request.cookies.get("access_token"))
 
         if user is None:
             return redirect_to_login()
 
-        return templates.TemplateResponse("stock.html", {"request": request})
-    except:
+        stock = db.query(Stock).filter(Stock.user_id == user.get("id")).all()
+
+        return templates.TemplateResponse("stock.html", {"request": request, "stock":stock, "user": user})
+    except Exception as e:
+        print("Error occurred: ", e)
         return redirect_to_login()
 
 ### Endpoints ###
