@@ -17,6 +17,7 @@
     <table>
         <thead>
             <tr>
+                <th style="display:none">Id</th>
                 <th>Cliente</th>
                 <th>Barbero</th>
                 <th>Servicio</th>
@@ -27,6 +28,23 @@
             </tr>
         </thead>
         <tbody>
+            {% for appointment in appointments %}
+            <tr>
+                <td style="display:none">{{ appointment.id }}</td>
+                <td>{{ appointment.customer_id }}</td>
+                <td>{{ appointment.barber_id }}</td>
+                <td>{{ appointment.service_id }}</td>
+                <td>{{ appointment.date }}</td>
+                <td>{{ appointment.payment_method }}</td>
+                <td>{{ appointment.state }}</td>
+                <td>
+                    <div class="icon">
+                        <img class="edit" src="../static/images/edit.png" alt="Edit" width="24"/>
+                        <img class="delete" src="../static/images/delete.png" alt="Delete" width="24"/>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
             <tr>
                 <td>Alejandro Gutierrez Davila</td>
                 <td>Samuel Cortina Garcia</td>

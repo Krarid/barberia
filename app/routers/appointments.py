@@ -31,14 +31,16 @@ user_dependency = Annotated[dict, Depends(get_current_user)]
 templates = Jinja2Templates(directory="app/templates")
 
 @router.get("/appointments")
-async def render_appointment_page(request: Request):
+async def render_appointment_page(request: Request, db: db_dependency):
     try:
         user = await get_current_user(request.cookies.get("access_token"))
 
         if user is None:
             return redirect_to_login()
 
-        return templates.TemplateResponse("appointments.html", {"request": request})
+        appointments = db.query(Appointments).filter(Appointments.user_id == user.get("id")).all()
+
+        return templates.TemplateResponse("appointments.html", {"request": request, "appointments":appointments, "user": user})
     except:
         return redirect_to_login()
 
@@ -79,7 +81,7 @@ async def create_appointment(user: user_dependency, db: db_dependency, appointme
     if user is None:
         raise HTTPException(status_code=401, detail="Authentication required")
 
-    appointment_model = Appointments(**appointment_request.model_dump())
+    appointment_model = Appointments(**appointment_request.model_dump(), user_id=user.get('id'))
     db.add(appointment_model)
     db.commit()
 
