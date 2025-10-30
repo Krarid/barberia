@@ -90,6 +90,22 @@ if (registerForm) {
     });
 }
 
+// Helper function to get a cookie by name
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+};
+
 function logout() {
     // Get all cookies
     const cookies = document.cookie.split(";");
@@ -106,3 +122,80 @@ function logout() {
     // Redirect to the login page
     window.location.href = '/auth/login';
 };
+
+/********** Add product ************/
+const stockForm = document.getElementById('stockForm');
+if (stockForm) {
+    stockForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        const payload = {
+            name: data.name,
+            unit: data.unit,
+            quantity: data.quantity,
+        };
+
+        try {
+            const response = await fetch('/stock', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${getCookie('access_token')}`
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                form.reset(); // Clear the form
+                window.location.href = '/stock/stock'; // Redirect to the stock page
+            } else {
+                // Handle error
+                const errorData = await response.json();
+                alert(`Error: ${errorData.detail}`);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        }
+    });
+}
+
+/********** Delete product ************/
+const stockTable = document.getElementById('stockTable');
+console.log(stockTable);
+
+if (stockTable) {
+    stockTable.addEventListener('click', async function (event) {
+        const id = event.target.closest('tr').firstElementChild.textContent;
+
+        try {
+            const token = getCookie('access_token');
+            if (!token) {
+                throw new Error('Authentication token not found');
+            }
+
+            const response = await fetch(`/stock/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                // Handle success
+                window.location.href = '/stock/stock';
+            } else {
+                // Handle error
+                const errorData = await response.json();
+                alert(`Error: ${errorData.detail}`);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        }
+    });
+}
