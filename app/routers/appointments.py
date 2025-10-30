@@ -9,7 +9,7 @@ from fastapi.templating import Jinja2Templates
 
 from ..database import SessionLocal
 from ..models import Appointments
-from .auth import get_current_user
+from .auth import get_current_user, redirect_to_login
 
 router = APIRouter(
     prefix='/appointments',
@@ -31,8 +31,16 @@ user_dependency = Annotated[dict, Depends(get_current_user)]
 templates = Jinja2Templates(directory="app/templates")
 
 @router.get("/appointments")
-def render_appointment_page(request: Request):
-    return templates.TemplateResponse("appointments.html", {"request": request})
+async def render_appointment_page(request: Request):
+    try:
+        user = await get_current_user(request.cookies.get("access_token"))
+
+        if user is None:
+            return redirect_to_login()
+
+        return templates.TemplateResponse("appointments.html", {"request": request})
+    except:
+        return redirect_to_login()
 
 ### Endpoints ###
 class AppointmentRequest(BaseModel):
