@@ -5,7 +5,7 @@ from typing import Annotated
 from sqlalchemy.orm import Session
 
 from ..database import SessionLocal
-from .auth import get_current_user
+from .auth import get_current_user, redirect_to_login
 
 router = APIRouter()
 
@@ -23,5 +23,13 @@ user_dependency = Annotated[dict, Depends(get_current_user)]
 templates = Jinja2Templates(directory="app/templates")
 
 @router.get("/home")
-def render_dashboard_page(request: Request):
-    return templates.TemplateResponse("home.html", {"request": request})
+async def render_dashboard_page(request: Request):
+    try:
+        user = await get_current_user(request.cookies.get("access_token"))
+
+        if user is None:
+            return redirect_to_login()
+
+        return templates.TemplateResponse("home.html", {"request": request})
+    except:
+        return redirect_to_login()
