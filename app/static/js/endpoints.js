@@ -170,32 +170,35 @@ console.log(stockTable);
 
 if (stockTable) {
     stockTable.addEventListener('click', async function (event) {
-        const id = event.target.closest('tr').firstElementChild.textContent;
 
-        try {
-            const token = getCookie('access_token');
-            if (!token) {
-                throw new Error('Authentication token not found');
-            }
+        if (event.target.className.includes('delete')) {
+            const id = event.target.closest('tr').firstElementChild.textContent;
 
-            const response = await fetch(`/stock/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`
+            try {
+                const token = getCookie('access_token');
+                if (!token) {
+                    throw new Error('Authentication token not found');
                 }
-            });
 
-            if (response.ok) {
-                // Handle success
-                window.location.href = '/stock/stock';
-            } else {
-                // Handle error
-                const errorData = await response.json();
-                alert(`Error: ${errorData.detail}`);
+                const response = await fetch(`/stock/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    // Handle success
+                    window.location.href = '/stock/stock';
+                } else {
+                    // Handle error
+                    const errorData = await response.json();
+                    alert(`Error: ${errorData.detail}`);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
             }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('An error occurred. Please try again.');
         }
     });
 }
