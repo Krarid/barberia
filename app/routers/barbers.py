@@ -30,14 +30,17 @@ user_dependency = Annotated[dict, Depends(get_current_user)]
 templates = Jinja2Templates(directory="app/templates")
 
 @router.get("/barbers")
-async def render_barbers_page(request: Request):
+async def render_barbers_page(request: Request, db: db_dependency):
     try:
         user = await get_current_user(request.cookies.get("access_token"))
 
         if user is None:
+            print('User is not authorized')
             return redirect_to_login()
 
-        return templates.TemplateResponse("barbers.html", {"request": request})
+        barbers = db.query(Barbers).filter(Barbers.user_id == user.get("id")).all()
+
+        return templates.TemplateResponse("barbers.html", {"request": request, "barbers":barbers, "user": user})
     except:
         return redirect_to_login()
 
@@ -71,7 +74,7 @@ async def create_barber(user: user_dependency, db: db_dependency, service_reques
     if user is None:
         raise HTTPException(status_code=401, detail="Authentication required")
 
-    barber_model = Barbers(**service_request.model_dump())
+    barber_model = Barbers(**service_request.model_dump(), user_id=user.get('id'))
     db.add(barber_model)
     db.commit()
 
