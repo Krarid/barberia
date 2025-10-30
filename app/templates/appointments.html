@@ -31,9 +31,9 @@
             {% for appointment in appointments %}
             <tr>
                 <td style="display:none">{{ appointment.id }}</td>
-                <td>{{ appointment.customer_id }}</td>
-                <td>{{ appointment.barber_id }}</td>
-                <td>{{ appointment.service_id }}</td>
+                <td>{{ customer.first_name }} {{ customer.last_name }}</td>
+                <td>{{ barber.first_name }} {{ barber.last_name }}</td>
+                <td>{{ service.name }}</td>
                 <td>{{ appointment.date }}</td>
                 <td>{{ appointment.payment_method }}</td>
                 <td>{{ appointment.state }}</td>

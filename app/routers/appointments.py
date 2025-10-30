@@ -8,7 +8,7 @@ from starlette import status
 from fastapi.templating import Jinja2Templates
 
 from ..database import SessionLocal
-from ..models import Appointments
+from ..models import Appointments, Customers, Barbers, Services
 from .auth import get_current_user, redirect_to_login
 
 router = APIRouter(
@@ -39,8 +39,11 @@ async def render_appointment_page(request: Request, db: db_dependency):
             return redirect_to_login()
 
         appointments = db.query(Appointments).filter(Appointments.user_id == user.get("id")).all()
+        customer = db.query(Customers).filter(Appointments.user_id == user.get("id")).filter(Customers.id == Appointments.customer_id).first()
+        barber = db.query(Barbers).filter(Appointments.user_id == user.get("id")).filter(Barbers.id == Appointments.barber_id).first()
+        service = db.query(Services).filter(Appointments.user_id == user.get("id")).filter(Services.id == Appointments.service_id).first()
 
-        return templates.TemplateResponse("appointments.html", {"request": request, "appointments":appointments, "user": user})
+        return templates.TemplateResponse("appointments.html", {"request": request, "appointments":appointments, "customer":customer, "barber":barber, "service":service, "user": user})
     except:
         return redirect_to_login()
 
