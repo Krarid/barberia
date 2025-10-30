@@ -17,19 +17,33 @@
     <table>
         <thead>
             <tr>
+                <th style="display:none">Id</th>
                 <th>Producto</th>
                 <th>Cantidad</th>
                 <th>Unidad</th>
-                <th>Precio</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
+            {% for product in stock %}
             <tr>
+                <td style="display:none">{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.quantity }}</td>
+                <td>{{ product.unit }}</td>
+                <td>
+                    <div class="icon">
+                        <img class="edit" src="../static/images/edit.png" alt="Edit" width="24"/>
+                        <img class="delete" src="../static/images/delete.png" alt="Delete" width="24"/>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td style="display:none">95</td>
                 <td>Crema para peinar</td>
                 <td>5</td>
                 <td>pza</td>
-                <td>$59.99</td>
                 <td>
                     <div class="icon">
                         <img class="edit" src="../static/images/edit.png" alt="Edit" width="24"/>
@@ -38,10 +52,10 @@
                 </td>
             </tr>
             <tr>
+                <td style="display:none">96</td>
                 <td>Jabon en barra</td>
                 <td>3</td>
                 <td>pza</td>
-                <td>$19.99</td>
                 <td>
                     <div class="icon">
                         <img class="edit" src="../static/images/edit.png" alt="Edit" width="24"/>
@@ -50,10 +64,10 @@
                 </td>
             </tr>
             <tr>
+                <td style="display:none">97</td>
                 <td>Tijeras</td>
                 <td>2</td>
                 <td>pza</td>
-                <td>$199.99</td>
                 <td>
                     <div class="icon">
                         <img class="edit" src="../static/images/edit.png" alt="Edit" width="24"/>
@@ -62,10 +76,10 @@
                 </td>
             </tr>
             <tr>
+                <td style="display:none">98</td>
                 <td>Agua</td>
                 <td>10</td>
                 <td>lt</td>
-                <td>$9.99</td>
                 <td>
                     <div class="icon">
                         <img class="edit" src="../static/images/edit.png" alt="Edit" width="24"/>

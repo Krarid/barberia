@@ -74,7 +74,7 @@ async def create_product(user: user_dependency, db: db_dependency, stock_request
     if user is None:
         raise HTTPException(status_code=401, detail="Authentication required")
 
-    stock_model = Stock(**stock_request.model_dump())
+    stock_model = Stock(**stock_request.model_dump(), user_id=user.get('id'))
     db.add(stock_model)
     db.commit()
 
