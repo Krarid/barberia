@@ -31,15 +31,18 @@ user_dependency = Annotated[dict, Depends(get_current_user)]
 templates = Jinja2Templates(directory="app/templates")
 
 @router.get("/customers")
-async def render_register_page(request: Request):
+async def render_register_page(request: Request, db: db_dependency):
     try:
         user = await get_current_user(request.cookies.get("access_token"))
 
         if user is None:
             return redirect_to_login()
 
-        return templates.TemplateResponse("customers.html", {"request": request})
-    except:
+        customers = db.query(Customers).filter(Customers.user_id == user.get("id")).all()
+
+        return templates.TemplateResponse("customers.html", {"request": request, "customers":customers, "user": user})
+    except Exception as e:
+        print("Error occurred: ", e)
         return redirect_to_login()
 
 ### Endpoints ###
@@ -74,7 +77,7 @@ async def create_customer(user: user_dependency, db: db_dependency, service_requ
     if user is None:
         raise HTTPException(status_code=401, detail="Authentication required")
 
-    customer_model = Customers(**service_request.model_dump())
+    customer_model = Customers(**service_request.model_dump(), user_id=user.get('id'))
     db.add(customer_model)
     db.commit()
 

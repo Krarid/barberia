@@ -1,10 +1,17 @@
 <div id="backgroundModal" class="modal-background" style="display:none">
     <div id="addModal" class="add-modal">
         <h1 class="modal-title">Agregar cliente</h1>
-        <form>
-            <div class="form-group">
-               <label for="full-name">Nombre completo:</label>
-                <input type="text" id="full-name" autocomplete="full-name" class="form-control underline-red" name="full-name" required/>
+        <form id="customersForm">
+            <div class="form-row">
+                <div class="form-group">
+                   <label for="first-name">Nombre completo:</label>
+                    <input type="text" id="first-name" autocomplete="first-name" class="form-control underline-red" name="firstname" required/>
+                </div>
+
+                <div class="form-group">
+                   <label for="last-name">Nombre completo:</label>
+                    <input type="text" id="last-name" autocomplete="last-name" class="form-control underline-red" name="lastname" required/>
+                </div>
             </div>
 
             <div class="form-row">

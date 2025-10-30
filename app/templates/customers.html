@@ -17,6 +17,7 @@
     <table>
         <thead>
             <tr>
+                <th style="display:none">Id</th>
                 <th>Nombre</th>
                 <th>Telefono</th>
                 <th>Cumpleaños</th>
@@ -25,11 +26,13 @@
             </tr>
         </thead>
         <tbody>
+            {% for customer in customers %}
             <tr>
-                <td>Alejandro Gutierrez Davila</td>
-                <td>+52 (491) 369-2342</td>
-                <td>28 de julio de 1978</td>
-                <td>Jose Manuel #312, San Pedro Garza</td>
+                <td style="display:none">{{ customer.id }}</td>
+                <td>{{ customer.first_name }} {{ customer.last_name }}</td>
+                <td>{{ customer.phone_number }}</td>
+                <td>{{ customer.birthday }}</td>
+                <td>{{ customer.address }}</td>
                 <td>
                     <div class="icon">
                         <img class="edit" src="../static/images/edit.png" alt="Edit" width="24"/>
@@ -37,54 +40,7 @@
                     </div>
                 </td>
             </tr>
-            <tr>
-                <td>Gaius Iulius Caesar Augustus</td>
-                <td>+52 (331) 234-6344</td>
-                <td>30 de noviembre de 1998</td>
-                <td>Comanjilla #324, San Luis Potosi</td>
-                <td>
-                    <div class="icon">
-                        <img class="edit" src="../static/images/edit.png" alt="Edit" width="24"/>
-                        <img class="delete" src="../static/images/delete.png" alt="Delete" width="24"/>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>Juana de Arco</td>
-                <td>+52 (552) 646-8654</td>
-                <td>12 de enero de 1967</td>
-                <td>San Andres #908, Cholula, Puebla</td>
-                <td>
-                    <div class="icon">
-                        <img class="edit" src="../static/images/edit.png" alt="Edit" width="24"/>
-                        <img class="delete" src="../static/images/delete.png" alt="Delete" width="24"/>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>Menjeperra Thutmose</td>
-                <td>+52 (534) 534-9583</td>
-                <td>28 de febrero de 2005</td>
-                <td>Independencia #142, Guadalajara, Jalisco.</td>
-                <td>
-                    <div class="icon">
-                        <img class="edit" src="../static/images/edit.png" alt="Edit" width="24"/>
-                        <img class="delete" src="../static/images/delete.png" alt="Delete" width="24"/>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>George Smith Patton, Jr.</td>
-                <td>+52 (754) 734-6453</td>
-                <td>11 de noviembre de 1985</td>
-                <td>La empanada #984, Chihuahua</td>
-                <td>
-                    <div class="icon">
-                        <img class="edit" src="../static/images/edit.png" alt="Edit" width="24"/>
-                        <img class="delete" src="../static/images/delete.png" alt="Delete" width="24"/>
-                    </div>
-                </td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
 
