@@ -30,6 +30,6 @@ async def render_dashboard_page(request: Request):
         if user is None:
             return redirect_to_login()
 
-        return templates.TemplateResponse("home.html", {"request": request})
+        return templates.TemplateResponse("home.html", {"request": request, "user": user})
     except:
         return redirect_to_login()
