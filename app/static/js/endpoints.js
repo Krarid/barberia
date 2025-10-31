@@ -166,7 +166,6 @@ if (stockForm) {
 
 /********** Delete product ************/
 const stockTable = document.getElementById('stockTable');
-console.log(stockTable);
 
 if (stockTable) {
     stockTable.addEventListener('click', async function (event) {
@@ -242,6 +241,44 @@ if (customerForm) {
         } catch (error) {
             console.error('Error:', error);
             alert('An error occurred. Please try again.');
+        }
+    });
+}
+
+/********** Delete customer ************/
+const customersTable = document.getElementById('customersTable');
+
+if (customersTable) {
+    customersTable.addEventListener('click', async function (event) {
+
+        if (event.target.className.includes('delete')) {
+            const id = event.target.closest('tr').firstElementChild.textContent;
+
+            try {
+                const token = getCookie('access_token');
+                if (!token) {
+                    throw new Error('Authentication token not found');
+                }
+
+                const response = await fetch(`/customers/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    // Handle success
+                    window.location.href = '/customers/customers';
+                } else {
+                    // Handle error
+                    const errorData = await response.json();
+                    alert(`Error: ${errorData.detail}`);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            }
         }
     });
 }
