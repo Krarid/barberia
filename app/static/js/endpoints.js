@@ -324,6 +324,44 @@ if (barbersForm) {
     });
 }
 
+/********** Delete barber ************/
+const barbersTable = document.getElementById('barbersTable');
+
+if (barbersTable) {
+    barbersTable.addEventListener('click', async function (event) {
+
+        if (event.target.className.includes('delete')) {
+            const id = event.target.closest('tr').firstElementChild.textContent;
+
+            try {
+                const token = getCookie('access_token');
+                if (!token) {
+                    throw new Error('Authentication token not found');
+                }
+
+                const response = await fetch(`/barbers/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    // Handle success
+                    window.location.href = '/barbers/barbers';
+                } else {
+                    // Handle error
+                    const errorData = await response.json();
+                    alert(`Error: ${errorData.detail}`);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            }
+        }
+    });
+}
+
 /********** Add services ************/
 const servicesForm = document.getElementById('servicesForm');
 if (servicesForm) {
