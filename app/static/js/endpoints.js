@@ -1,12 +1,16 @@
-// Login JS
-const loginForm = document.getElementById('loginForm');
-if (loginForm) {
+function setAuthBackground() {
     document.body.style.backgroundImage  = "url('../../static/images/barber-bg.webp')";
     document.body.style.backgroundSize = 'cover';
     document.body.style.backgroundRepeat = 'no-repeat';
     document.body.style.backgroundPosition = 'center center';
     document.body.style.backgroundAttachment = 'fixed';
     document.body.style.height = '100vh';
+}
+
+// Login JS
+const loginForm = document.getElementById('loginForm');
+if (loginForm) {
+    setAuthBackground();
 
     loginForm.addEventListener('submit', async function (event) {
         event.preventDefault();
@@ -51,6 +55,7 @@ if (loginForm) {
 // Register
 const registerForm = document.getElementById('registerForm');
 if (registerForm) {
+    setAuthBackground();
 
     registerForm.addEventListener('submit', async function (event) {
         event.preventDefault();
