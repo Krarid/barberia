@@ -286,3 +286,43 @@ if (barbersForm) {
         }
     });
 }
+
+/********** Add services ************/
+const servicesForm = document.getElementById('servicesForm');
+if (servicesForm) {
+    servicesForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        const payload = {
+            name: data.name,
+            price: data.price
+        };
+
+        try {
+            const response = await fetch('/services', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${getCookie('access_token')}`
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                form.reset(); // Clear the form
+                window.location.href = '/services/services'; // Redirect to the stock page
+            } else {
+                // Handle error
+                const errorData = await response.json();
+                alert(`Error: ${errorData.detail}`);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        }
+    });
+}
