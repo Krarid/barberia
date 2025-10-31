@@ -202,3 +202,48 @@ if (stockTable) {
         }
     });
 }
+
+/********** Add customer ************/
+const customerForm = document.getElementById('customersForm');
+if (customerForm) {
+    customerForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        console.log('Data: ' + data);
+
+        const payload = {
+            first_name: data.firstname,
+            last_name: data.lastname,
+            birthday: data.birthday,
+            phone_number: data.phone,
+            address: data.address
+        };
+
+        try {
+            const response = await fetch('/customers', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${getCookie('access_token')}`
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                form.reset(); // Clear the form
+                window.location.href = '/customers/customers'; // Redirect to the stock page
+            } else {
+                // Handle error
+                const errorData = await response.json();
+                alert(`Error: ${errorData.detail}`);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        }
+    });
+}
