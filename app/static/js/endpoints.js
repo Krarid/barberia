@@ -439,3 +439,41 @@ if (servicesTable) {
         }
     });
 }
+
+/********** Delete appointment ************/
+const appointmentsTable = document.getElementById('appointmentsTable');
+
+if (appointmentsTable) {
+    appointmentsTable.addEventListener('click', async function (event) {
+
+        if (event.target.className.includes('delete')) {
+            const id = event.target.closest('tr').firstElementChild.textContent;
+
+            try {
+                const token = getCookie('access_token');
+                if (!token) {
+                    throw new Error('Authentication token not found');
+                }
+
+                const response = await fetch(`/appointments/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    // Handle success
+                    window.location.href = '/appointments/appointments';
+                } else {
+                    // Handle error
+                    const errorData = await response.json();
+                    alert(`Error: ${errorData.detail}`);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            }
+        }
+    });
+}
