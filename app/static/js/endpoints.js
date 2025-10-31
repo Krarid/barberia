@@ -213,8 +213,6 @@ if (customerForm) {
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
-        console.log('Data: ' + data);
-
         const payload = {
             first_name: data.firstname,
             last_name: data.lastname,
@@ -236,6 +234,47 @@ if (customerForm) {
             if (response.ok) {
                 form.reset(); // Clear the form
                 window.location.href = '/customers/customers'; // Redirect to the stock page
+            } else {
+                // Handle error
+                const errorData = await response.json();
+                alert(`Error: ${errorData.detail}`);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        }
+    });
+}
+
+/********** Add barbers ************/
+const barbersForm = document.getElementById('barbersForm');
+if (barbersForm) {
+    barbersForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        const payload = {
+            first_name: data.firstname,
+            last_name: data.lastname,
+            birthday: data.birthday
+        };
+
+        try {
+            const response = await fetch('/barbers', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${getCookie('access_token')}`
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                form.reset(); // Clear the form
+                window.location.href = '/barbers/barbers'; // Redirect to the stock page
             } else {
                 // Handle error
                 const errorData = await response.json();
